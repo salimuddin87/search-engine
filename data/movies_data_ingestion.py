@@ -3,7 +3,7 @@ import requests
 from pathlib import Path
 
 SOLR_URL = "http://localhost:8983/solr"
-DATA_DIR = Path("./")
+DATA_DIR = Path("data_csv/")
 
 
 def post_csv(collection, csv_path, commit=True):
@@ -15,7 +15,7 @@ def post_csv(collection, csv_path, commit=True):
 
 
 if __name__ == "__main__":
-    post_csv("films", DATA_DIR/"top_10000_imdb_movies.csv")
-    # post_csv("users", DATA_DIR/"users.csv")
+    post_csv("movies", DATA_DIR/"movies.csv")
+    post_csv("ratings", DATA_DIR/"ratings.csv")
     print("Indexing done. Run a query to verify, e.g.:")
-    print(f"{SOLR_URL}/films/select?q=*:*&rows=5")
+    print(f"{SOLR_URL}/movies/select?q=*:*&rows=5")

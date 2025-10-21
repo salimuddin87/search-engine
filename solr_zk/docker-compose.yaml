@@ -1,0 +1,51 @@
+services:
+  zookeeper:
+    image: zookeeper:3.8.4
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOO_MY_ID=1
+    volumes:
+      - zoo_data:/data
+      - zoo_datalog:/datalog
+      - ./zoo.cfg:/conf/zoo.cfg
+    networks:
+      - solr-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  solr:
+    image: solr:9.9.0
+    container_name: solr
+    ports:
+      - "8983:8983"
+    environment:
+      - ZK_HOST=zookeeper:2181
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    volumes:
+      - ./configsets:/opt/solr/server/solr/configsets/custom
+      - solr_data:/var/solr
+    networks:
+      - solr-network
+    command: solr-foreground -c -z zookeeper:2181
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8983/solr/admin/info/system || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+networks:
+  solr-network:
+    driver: bridge
+
+volumes:
+  zoo_data:
+  zoo_datalog:
+  solr_data:

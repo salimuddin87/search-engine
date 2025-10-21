@@ -12,6 +12,5 @@
 11. awards: List(String)
 12. box_office_collection: Float
 13. writer : List(String)
-14. rotten_tomatoes_score: Float
-15. id : String (Unique Identifier)
-16. total_votes: Integer
+14. id : String (Unique Identifier)
+15. total_votes: Integer

@@ -1,6 +1,6 @@
 # search-engine ignore file for Python projects
 # Created: 2013-03-22
-data_ingestion/data/
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
